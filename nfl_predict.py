@@ -11,10 +11,15 @@ def predict_elo(team1_abbr, team2_abbr):
 
     TEAMS = [team1_abbr, team2_abbr]
     TEAMS[0] = { "ABBR": team1_abbr, "ELO": ELO[team1_abbr]["ELO"], "PROB": 0 }
-    TEAMS[1] = { "ABBR": team2_abbr, "ELO": ELO[team2_abbr]["ELO"], "PROB": 0 }
+    TEAMS[1] = { "ABBR": team2_abbr, "ELO": ELO[team2_abbr]["ELO"] + 68.3, "PROB": 0 } # Home Advantage: http://opisthokonta.net/?p=1387
 
-    TEAMS[0]["PROB"] = 1 / (1+(20**((TEAMS[1]["ELO"] - TEAMS[0]["ELO"])/400)))
-    TEAMS[1]["PROB"] = 1 / (1+(20**((TEAMS[0]["ELO"] - TEAMS[1]["ELO"])/400)))
+    TEAMS[0]["PROB"] = (1 / (1+(20**((TEAMS[1]["ELO"] - TEAMS[0]["ELO"])/400)))) - 0.0683 # Away Disadvantage
+    TEAMS[1]["PROB"] = (1 / (1+(20**((TEAMS[0]["ELO"] - TEAMS[1]["ELO"])/400)))) + 0.0683 # Home Advantage
 
-    RESULTS = ( random.choices( [team1_abbr, team2_abbr], weights=(TEAMS[0]["PROB"], TEAMS[1]["PROB"]), k = 1000000 ) )
+    # Debug:
+    # print(str(TEAMS[0]) + ": " + str(TEAMS[0]["PROB"]) + "%")
+    # print(str(TEAMS[1]) + ": " + str(TEAMS[1]["PROB"]) + "%")
+    # print("\n")
+
+    RESULTS = ( random.choices( [team1_abbr, team2_abbr], weights=(TEAMS[0]["PROB"], TEAMS[1]["PROB"]), k = 1_000_000 ) )
     return([most_frequent(RESULTS), leas_frequent(RESULTS)])
