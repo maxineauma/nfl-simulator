@@ -21,3 +21,7 @@ def simulate_week(W):
 
         ELO[r[1]]["L"] = ELO[r[1]]["L"] + 1
         ELO[r[1]]["ELO"] = ELO[r[1]]["ELO"] + K_factor*(0 - (1/(1+10**((TEMP_ELO_W_OLD - TEMP_ELO_L_OLD)/400))))
+
+        print(str(ELO[r[0]]))
+        print(str(ELO[r[1]]))
+        print("\n")

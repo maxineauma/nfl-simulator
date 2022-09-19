@@ -16,10 +16,9 @@ def predict_elo(team1_abbr, team2_abbr):
     TEAMS[0]["PROB"] = (1 / (1+(20**((TEAMS[1]["ELO"] - TEAMS[0]["ELO"])/400)))) - 0.0683 # Away Disadvantage
     TEAMS[1]["PROB"] = (1 / (1+(20**((TEAMS[0]["ELO"] - TEAMS[1]["ELO"])/400)))) + 0.0683 # Home Advantage
 
-    # Debug:
-    # print(str(TEAMS[0]) + ": " + str(TEAMS[0]["PROB"]) + "%")
-    # print(str(TEAMS[1]) + ": " + str(TEAMS[1]["PROB"]) + "%")
-    # print("\n")
+    print(TEAMS[0]["ABBR"] + " @ " + TEAMS[1]["ABBR"])
+    print(TEAMS[1]["ABBR"] + " (home) win probability: " + str(TEAMS[1]["PROB"]))
+    print(TEAMS[0]["ABBR"] + " (away) win probability: " + str(TEAMS[0]["PROB"]))
 
     RESULTS = ( random.choices( [team1_abbr, team2_abbr], weights=(TEAMS[0]["PROB"], TEAMS[1]["PROB"]), k = 1_000_000 ) )
     return([most_frequent(RESULTS), leas_frequent(RESULTS)])
